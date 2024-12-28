@@ -4,6 +4,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const UserModel = require("./models/user");
+const PlaceModel = require("./models/place");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const imageDownloader = require("image-downloader");
@@ -116,6 +117,53 @@ app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
     uploadedFiles.push(newPath.replace("uploads/", ""));
   }
   res.json(uploadedFiles);
+});
+
+app.post("/places", (req, res) => {
+  const { token } = req.cookies;
+  const {
+    title,
+    description,
+    addedPhotos,
+    address,
+    perks,
+    extraInfo,
+    checkIn,
+    checkOut,
+    maxGuests,
+  } = req.body;
+  jwt.verify(token, jwtSecret, {}, async (err, user) => {
+    if (err) throw err;
+    const place = await PlaceModel.create({
+      owner: user.id,
+      title,
+      description,
+      photos: addedPhotos,
+      address,
+      perks,
+      extraInfo,
+      checkIn,
+      checkOut,
+      maxGuests,
+    });
+    res.json(place);
+  });
+});
+
+app.get("/places", async (req, res) => {
+  const { token } = req.cookies;
+  jwt.verify(token, jwtSecret, {}, async (err, user) => {
+    const { id } = user;
+    const places = await PlaceModel.find({ owner: id });
+    res.json(places);
+  });
+});
+
+app.get("/places/:id", async (req, res) => {
+  const { id } = req.params;
+  const place = await PlaceModel.findById(id);
+  if (!place) return res.status(404).json({ message: "Place not found" });
+  res.json(place);
 });
 
 app.listen(4000, () => {
