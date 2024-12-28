@@ -9,7 +9,7 @@ const LoginPage = () => {
         password: ''
     });
     const navigate = useNavigate();
-    const { setUser } = useContext(UserContext)
+    const { setUser, setReady } = useContext(UserContext)
 
     function handleChange(e) {
         const { name, value } = e.target;
@@ -19,8 +19,11 @@ const LoginPage = () => {
         e.preventDefault();
         try {
             const { data } = await axios.post("/login", formData);
+            // const response = await axios.get("/login");
+            // console.log(response);
             setUser(data);
             alert("Login successful");
+            setReady(true);
             navigate("/");
         }
         catch (error) {

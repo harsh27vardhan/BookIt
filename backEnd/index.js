@@ -6,6 +6,9 @@ const bcrypt = require("bcryptjs");
 const UserModel = require("./models/user");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
+const imageDownloader = require("image-downloader");
+const multer = require("multer");
+const fs = require("fs");
 
 const app = express();
 
@@ -25,6 +28,7 @@ app.use(
   })
 ); // to parse form data
 app.use(cookieParser()); // to parse cookies
+app.use("/uploads", express.static(__dirname + "/uploads")); //middleware for uploading photos to the server
 
 // Database connection
 mongoose.connect(process.env.MONGO_URL);
@@ -61,7 +65,12 @@ app.post("/login", async (req, res) => {
       {},
       (err, token) => {
         if (err) throw err;
-        res.cookie("token", token).json(user);
+        res
+          .cookie("token", token, {
+            httpOnly: false,
+            secure: false,
+          })
+          .json(user);
       }
     );
   } catch (err) {
@@ -85,8 +94,30 @@ app.post("/logout", (req, res) => {
   res.cookie("token", "").json(true);
 });
 
-app.get("/test", async (req, res) => {
-  return res.json("Test completed successfully");
+app.post("/upload-by-link", async (req, res) => {
+  const { link } = req.body;
+  const newName = "photo" + Date.now() + ".jpg";
+  await imageDownloader.image({
+    url: link,
+    dest: __dirname + "/uploads/" + newName,
+  });
+  res.json(newName);
 });
 
-app.listen(4000);
+const photoMiddleware = multer({ dest: __dirname + "/uploads" });
+app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const { path, originalname } = req.files[i];
+    const parts = originalname.split(".");
+    const ext = parts[parts.length - 1];
+    const newPath = path + "." + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace("uploads/", ""));
+  }
+  res.json(uploadedFiles);
+});
+
+app.listen(4000, () => {
+  console.log("Server is running on port 4000");
+});

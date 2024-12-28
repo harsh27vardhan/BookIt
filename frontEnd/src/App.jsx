@@ -21,6 +21,7 @@ function App() {
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/account/:subpage?" element={<Account />} />
             {/* The ? at the end of subpage will make the / route as undefined and rest of the routes will be consired according to the subpage */}
+            <Route path="/account/:subpage/:action" element={<Account />} />
           </Route>
         </Routes>
       </UserContextProvider>
