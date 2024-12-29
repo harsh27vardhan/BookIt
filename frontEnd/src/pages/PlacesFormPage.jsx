@@ -17,6 +17,7 @@ const PlacesFormPage = () => {
     const [checkOut, setCheckOut] = useState("");
     const [maxGuests, setMaxGuests] = useState(1);
     const [redirect, setRedirect] = useState("");
+    const [price, setPrice] = useState(100);
 
     useEffect(() => {
         if (!id) return;
@@ -24,21 +25,30 @@ const PlacesFormPage = () => {
             const { data } = response;
             setTitle(data.title);
             setAddress(data.address);
-            setAddedPhotos(data.addedPhotos);
+            setAddedPhotos(data.photos);
             setDescription(data.description);
             setPerks(data.perks);
             setExtraInfo(data.extraInfo);
             setCheckIn(data.checkIn);
             setCheckOut(data.checkOut);
             setMaxGuests(data.maxGuests);
+            setPrice(data.price);
         })
     }, [id])
 
-    async function addNewPlace(e) {
+    async function savePlace(e) {
         e.preventDefault();
-        const placeData = { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests };
-        await axios.post("/places", placeData);
-        setRedirect(true);
+        const placeData = { title, address, addedPhotos, description, perks, extraInfo, checkIn, checkOut, maxGuests, price };
+        if (id) {
+            //update
+            await axios.put("/places", { id, ...placeData });
+            setRedirect(true);
+        }
+        else {
+            //new place
+            await axios.post("/places", placeData);
+            setRedirect(true);
+        }
     }
 
     if (redirect) {
@@ -49,7 +59,7 @@ const PlacesFormPage = () => {
         <div>
             <AccountNav />
 
-            <form onSubmit={addNewPlace}>
+            <form onSubmit={savePlace}>
                 <h2 className="text-2xl mt-4">Title</h2>
                 <p className="text-gray-500 text-sm">
                     Title for you place. It should be short and eye catchy for the
@@ -95,7 +105,7 @@ const PlacesFormPage = () => {
                     add check in and out times, remember to have some time for cleaning
                     the room between guests
                 </p>
-                <div className="grid gap-2 sm:grid-cols-3">
+                <div className="grid gap-2 grid-cols-2 md:grid-cols-4">
                     <div>
                         <h3 className="mt-2 -mb-1">Check in time</h3>
                         <input
@@ -119,6 +129,15 @@ const PlacesFormPage = () => {
                         <input
                             value={maxGuests}
                             onChange={(e) => setMaxGuests(e.target.value)}
+                            type="number"
+                            placeholder="12"
+                        />
+                    </div>
+                    <div>
+                        <h3 className="mt-2 -mb-1">Price per night</h3>
+                        <input
+                            value={price}
+                            onChange={(e) => setPrice(e.target.value)}
                             type="number"
                             placeholder="12"
                         />

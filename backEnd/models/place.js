@@ -9,6 +9,9 @@ const PlaceSchema = new mongoose.Schema({
   perks: [String],
   availableFrom: Date,
   extraInfo: String,
+  checkIn: String,
+  checkOut: String,
+  maxGuests: String,
 });
 
 const PlaceModel = mongoose.model("place", PlaceSchema);

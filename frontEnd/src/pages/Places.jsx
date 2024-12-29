@@ -11,7 +11,7 @@ const Places = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get("/places").then(({ data }) => {
+        axios.get("/user-places").then(({ data }) => {
             setPlaces(data);
         })
     }, [])
@@ -32,17 +32,19 @@ const Places = () => {
             <div>
                 {places.length > 0 && (
                     places.map((place, index) => (
-                        <div onClick={() => {
-                            console.log("div clicked..");
-                            navigate('/account/places/' + place._id)
-                        }} key={index} className="border border-gray-300 bg-gray-100 p-4 rounded-xl gap-4 mt-4 w-full">
-                            <h2 className="text-xl bold">{place.title}</h2>
-                            <div className="flex flex-wrap gap-4">
+                        <div key={index} className="border border-gray-300 bg-gray-100 p-4 rounded-xl gap-4 mt-4 w-full">
+                            <div className="flex items-start justify-between">
+                                <h2 className="text-2xl font-semibold text-gray-800">{place.title}</h2>
+                                <span className="text-sm text-gray-500">
+                                    Max Guests: {place.maxGuests}
+                                </span>
+                            </div>
+                            <div className="flex flex-wrap gap-4 my-4">
                                 {place.photos.length > 0 && (
                                     place.photos.map((photo, photoIndex) => (
                                         <img
                                             key={photoIndex}
-                                            className="w-64 h-64 rounded-lg"
+                                            className="w-[12rem] h-32 rounded-lg"
                                             src={`http://localhost:4000/uploads/${photo}`}
                                             alt=""
                                         />
@@ -50,8 +52,9 @@ const Places = () => {
                                 )}
                             </div>
                             <p className="text-gray-600">{place.description}</p>
-                            {/* <div className="flex justify-between items-center gap-2">
-                                <Link to={`/account/places/${place._id}/edit`}>
+                            <p>₹ {place.price} per night</p>
+                            <div className="flex justify-between items-center gap-2 mt-4">
+                                <Link to={`/account/places/${place._id}`} className="border border-black px-4 py-2 rounded-full">
                                     Edit
                                 </Link>
                                 <button
@@ -64,7 +67,7 @@ const Places = () => {
                                 >
                                     Delete
                                 </button>
-                            </div> */}
+                            </div>
                         </div>
                     ))
                 )}
