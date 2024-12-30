@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useState } from 'react'
-import { Link, Navigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const RegisterPage = () => {
     const [formData, setFormData] = useState({
@@ -8,6 +8,7 @@ const RegisterPage = () => {
         email: '',
         password: ''
     });
+    const navigate = useNavigate();
     function handleChange(e) {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -17,7 +18,7 @@ const RegisterPage = () => {
         try {
             axios.post("/register", formData);
             alert("Registration successful. Now you can log in.");
-            <Navigate to={"/login"} />
+            navigate("/login");
         }
         catch (err) {
             alert("Registration failed. Please try again later.")
