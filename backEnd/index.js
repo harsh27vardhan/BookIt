@@ -19,7 +19,7 @@ const jwtSecret = "randomstring";
 //Middleware
 app.use(
   cors({
-    origin: "https://booknext.vercel.app/", // this is the frontend address
+    origin: true,
     credentials: true,
   })
 );
