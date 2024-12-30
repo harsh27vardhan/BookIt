@@ -71,6 +71,7 @@ app.post("/login", async (req, res) => {
           .cookie("token", token, {
             httpOnly: false,
             secure: false,
+            domain: "http://localhost:5173",
           })
           .json(user);
       }
