@@ -70,7 +70,8 @@ app.post("/login", async (req, res) => {
         res
           .cookie("token", token, {
             httpOnly: false,
-            secure: false,
+            secure: true,
+            sameSite: "Lax",
           })
           .json(user);
       }
@@ -159,12 +160,17 @@ app.post("/places", (req, res) => {
 });
 
 app.get("/user-places", async (req, res) => {
-  const { token } = req.cookies;
-  jwt.verify(token, jwtSecret, {}, async (err, user) => {
-    const { id } = user;
-    const places = await PlaceModel.find({ owner: id });
-    res.json(places);
-  });
+  try {
+    const { token } = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      const { id } = user;
+      const places = await PlaceModel.find({ owner: id });
+      res.json(places);
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Failed to fetch places" });
+  }
 });
 
 app.put("/places", async (req, res) => {
