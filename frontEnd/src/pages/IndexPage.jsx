@@ -15,7 +15,7 @@ const IndexPage = () => {
                 <Link to={'/place/' + place._id} key={place._id}>
                     <div className='bg-gray-500 rounded-2xl mb-2 aspect-square'>
                         {place.photos?.[0] && (
-                            <img src={"http://localhost:4000/uploads/" + place.photos?.[0]} alt="" className='rounded-2xl w-full h-full' />)}
+                            <img src={"https://bookit-8xdu.onrender.com/uploads/" + place.photos?.[0]} alt="" className='rounded-2xl w-full h-full' />)}
                     </div>
                     <h2 className="text-sm truncate">
                         {place.title}

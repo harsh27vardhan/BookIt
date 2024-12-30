@@ -53,7 +53,7 @@ const PhotoUploader = ({ addedPhotos, onChange }) => {
             <div className="mt-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 items-center gap-2">
                 {addedPhotos.length > 0 && addedPhotos.map((link, index) => (
                     <div key={index} className="h-32 flex">
-                        <img className="rounded-2xl w-full object-cover" src={`http://localhost:4000/uploads/${link}`} alt="" />
+                        <img className="rounded-2xl w-full object-cover" src={`https://bookit-8xdu.onrender.com/uploads/${link}`} alt="" />
                     </div>
                 ))}
                 <label className="flex justify-center items-center border bg-transparent rounded-2xl h-32 cursor-pointer p-2 text-2xl text-gray-600">

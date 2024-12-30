@@ -18,7 +18,7 @@ const BookingPage = () => {
             {bookings.length > 0 && bookings.map((booking, index) => (
                 <div key={index} className='flex gap-4 bg-gray-100 rounded-2xl overflow-hidden'>
                     <div className='w-48'>
-                        <img src={"http://localhost:4000/uploads/" + booking.placeId.photos?.[0]} className='h-full' alt="" />
+                        <img src={"https://bookit-8xdu.onrender.com/uploads/" + booking.placeId.photos?.[0]} className='h-full' alt="" />
                     </div>
                     <div className='py-3 pr-3 grow'>
                         <h2 className='text-2xl font-semibold'>{booking.placeId.title}</h2>
