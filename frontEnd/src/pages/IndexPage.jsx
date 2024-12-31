@@ -19,7 +19,7 @@ const IndexPage = () => {
                     <h2 className="text-sm truncate">
                         {place.title}
                     </h2>
-                    <h3 className="font-bold">{place.address}</h3>
+                    <h3 className="font-bold truncate">{place.address}</h3>
                     <div className='mt-2'>
                         <span className='font-bold'>₹ {place.price} per night</span>
                     </div>

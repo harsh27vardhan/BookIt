@@ -18,20 +18,20 @@ const AccountNav = () => {
         else {
             classes += " bg-gray-200 rounded-full";
         }
-        return classes + " py-2 px-4 flex items-center gap-1";
+        return classes + " account-nav py-2 px-4 flex items-center gap-1";
     }
     return (
-        <nav className="flex w-full items-center justify-center mt-8 gap-4 mb-8">
+        <nav className="account-nav-div flex w-full items-center justify-center mt-8 gap-4 mb-8 text-nowrap">
             <Link className={linkClasses("profile")} to={"/account"}>
-                <img className="h-4" src={profileImg} alt="" />
+                {subpage === "profile" ? <img className="h-4" src={profileImg} alt="" /> : null}
                 My Profile
             </Link>
             <Link className={linkClasses("bookings")} to={"/account/bookings"}>
-                <img className="h-4" src={bookingImg} alt="" />
+                {subpage === "bookings" ? <img className="h-4" src={bookingImg} alt="" /> : null}
                 My bookings
             </Link>
             <Link className={linkClasses("places")} to={"/account/places"}>
-                <img className="h-4" src={accomImg} alt="" />
+                {subpage === "places" ? <img className="h-4" src={accomImg} alt="" /> : null}
                 My accomodations
             </Link>
         </nav>
