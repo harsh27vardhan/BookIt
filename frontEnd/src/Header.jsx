@@ -12,7 +12,7 @@ const Header = () => {
         <header className='flex justify-between'>
             <Link to={"/"} className='flex items-center gap-1'>
                 <img src={logoImg} alt="" className='logo w-8 h-6' />
-                <span className='font-bold'>BookIt</span>
+                <span className='font-bold'>RentItUp</span>
             </Link>
 
             <div className='flex items-center border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300 gap-2'>

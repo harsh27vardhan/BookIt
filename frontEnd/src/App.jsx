@@ -12,7 +12,7 @@ import PlacesFormPage from './pages/PlacesFormPage'
 import PlacePage from './pages/PlacePage'
 import BookingPage from './pages/BookingPage'
 
-axios.defaults.baseURL = 'https://bookit-8xdu.onrender.com';
+axios.defaults.baseURL = process.env.BACKEND_BASEURL;
 axios.defaults.withCredentials = true;
 function App() {
   return (

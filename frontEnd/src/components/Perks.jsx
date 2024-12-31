@@ -10,36 +10,22 @@ const Perks = ({ selected, onChange }) => {
             onChange(selected.filter(perk => perk !== name));
         }
     }
+    const perksArray = [{ name: 'wifi', text: "Wifi" },
+    { name: 'parking', text: "Free Parking spot" },
+    { name: 'restaurants', text: "Restaurants" },
+    { name: 'tv', text: "TV" },
+    { name: 'pets', text: "Pets Allowed" },
+    { name: 'entrance', text: "Private Entrance" },
+    { name: 'bars', text: "Bars" },
+    ]
     return (
-        <div className='grid mt-2 gap-1 grid-cols-2 md:grid-cols-3 lg:grid-cols-6'>
-            <label className='flex items-center gap-2 border p-4 rounded-2xl'>
-                <input type="checkbox" checked={selected.includes('wifi')} name="wifi" onChange={handleCbClick} />
-                <span className='text-gray-600'>Wifi</span>
-            </label>
-            <label className='flex items-center gap-2 border p-4 rounded-2xl'>
-                <input type="checkbox" checked={selected.includes('parking')} name="parking" onChange={handleCbClick} />
-                <span className='text-gray-600'>Free Parking spot</span>
-            </label>
-            <label className='flex items-center gap-2 border p-4 rounded-2xl'>
-                <input type="checkbox" checked={selected.includes('restaurants')} name="restaurants" onChange={handleCbClick} />
-                <span className='text-gray-600'>Restaurants</span>
-            </label>
-            <label className='flex items-center gap-2 border p-4 rounded-2xl'>
-                <input type="checkbox" checked={selected.includes('tv')} name="tv" onChange={handleCbClick} />
-                <span className='text-gray-600'>TV</span>
-            </label>
-            <label className='flex items-center gap-2 border p-4 rounded-2xl'>
-                <input type="checkbox" checked={selected.includes('pets')} name="pets" onChange={handleCbClick} />
-                <span className='text-gray-600'>Pets</span>
-            </label>
-            <label className='flex items-center gap-2 border p-4 rounded-2xl'>
-                <input type="checkbox" checked={selected.includes('entrance')} name="entrance" onChange={handleCbClick} />
-                <span className='text-gray-600'>Private entrance</span>
-            </label>
-            <label className='flex items-center gap-2 border p-4 rounded-2xl'>
-                <input type="checkbox" checked={selected.includes('bars')} name="bars" onChange={handleCbClick} />
-                <span className='text-gray-600'>Bars</span>
-            </label>
+        <div className='flex flex-wrap gap-2 mt-2'>
+            {perksArray.map((perk, index) => (
+                <label key={index} className='flex items-center gap-2 border p-4 rounded-2xl border-gray-400'>
+                    <input type="checkbox" checked={selected.includes(perk.name)} name={perk.name} onChange={handleCbClick} />
+                    <span className='text-gray-600 text-nowrap'>{perk.text}</span>
+                </label>
+            ))}
         </div>
     )
 }

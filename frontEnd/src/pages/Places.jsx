@@ -45,7 +45,7 @@ const Places = () => {
                                         <img
                                             key={photoIndex}
                                             className="w-[12rem] h-32 rounded-lg"
-                                            src={`https://bookit-8xdu.onrender.com/uploads/${photo}`}
+                                            src={photo}
                                             alt=""
                                         />
                                     ))

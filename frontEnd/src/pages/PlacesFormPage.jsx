@@ -59,7 +59,7 @@ const PlacesFormPage = () => {
         <div>
             <AccountNav />
 
-            <form onSubmit={savePlace}>
+            <form onSubmit={savePlace} className='max-w-[920px] m-auto border p-4 rounded-lg border-gray-300 px-8'>
                 <h2 className="text-2xl mt-4">Title</h2>
                 <p className="text-gray-500 text-sm">
                     Title for you place. It should be short and eye catchy for the

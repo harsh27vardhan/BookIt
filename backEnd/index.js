@@ -117,6 +117,7 @@ app.post("/upload", photoMiddleware.array("photos", 100), (req, res) => {
   const uploadedFiles = [];
   for (let i = 0; i < req.files.length; i++) {
     const { path, originalname } = req.files[i];
+    console.log("Path");
     const parts = originalname.split(".");
     const ext = parts[parts.length - 1];
     const newPath = path + "." + ext;
@@ -230,40 +231,50 @@ app.get("/places", async (req, res) => {
 });
 
 app.post("/booking", (req, res) => {
-  const { token } = req.cookies;
-  const { placeId, numberOfGuests, name, mobile, checkIn, checkOut, price } =
-    req.body;
-  jwt.verify(token, jwtSecret, {}, async (err, user) => {
-    if (err) return res.status(401).send({ message: "Need to login" });
-    await BookingModel.create({
-      placeId,
-      userId: user.id,
-      numberOfGuests,
-      name,
-      mobile,
-      checkIn,
-      checkOut,
-      price,
-    })
-      .then((doc) => {
-        res.json(doc);
+  try {
+    const { token } = req.cookies;
+    const { placeId, numberOfGuests, name, mobile, checkIn, checkOut, price } =
+      req.body;
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) return res.status(401).send({ message: "Need to login" });
+      await BookingModel.create({
+        placeId,
+        userId: user.id,
+        numberOfGuests,
+        name,
+        mobile,
+        checkIn,
+        checkOut,
+        price,
       })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: "Failed to create booking" });
-      });
-  });
+        .then((doc) => {
+          res.json(doc);
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).json({ message: "Failed to create booking" });
+        });
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to create booking" });
+  }
 });
 
 app.get("/bookings", async (req, res) => {
-  const { token } = req.cookies;
-  jwt.verify(token, jwtSecret, {}, async (err, user) => {
-    if (err) throw err;
-    const bookings = await BookingModel.find({ userId: user.id }).populate(
-      "placeId"
-    );
-    res.json(bookings);
-  });
+  try {
+    const { token } = req.cookies;
+    jwt.verify(token, jwtSecret, {}, async (err, user) => {
+      if (err) {
+        return res.status(401).send({ message: "Need to login" });
+      }
+      const bookings = await BookingModel.find({ userId: user.id }).populate(
+        "placeId"
+      );
+      res.json(bookings);
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch bookings" });
+  }
 });
 
 app.listen(4000, () => {
